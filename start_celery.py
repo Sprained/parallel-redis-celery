@@ -14,6 +14,5 @@ if queues:
                 "app.celery",
                 "worker",
                 "--queues={}".format(queue_name),
-                "--loglevel=info",
             ]
         )

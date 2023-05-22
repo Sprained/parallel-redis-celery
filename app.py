@@ -1,3 +1,5 @@
+import subprocess
+
 from celery import Celery
 
 celery = Celery(
@@ -11,3 +13,16 @@ def devine(x, y):
 
     time.sleep(5)
     return x / y
+
+
+@celery.task
+def create_worker(name):
+    subprocess.Popen(
+        [
+            "celery",
+            "-A",
+            "app.celery",
+            "worker",
+            "--queues={}".format(name),
+        ]
+    )

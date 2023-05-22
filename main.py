@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 
+from app import celery, create_worker
+
 app = FastAPI()
 
 
@@ -8,9 +10,11 @@ async def root():
     return {"message": "Hello World"}
 
 
-# @app.post("/devine")
-# async def add_devine():
-#     devine.delay(1, 2)
+@app.post("/create")
+async def create_queue():
+    celery.send_task(
+        "app.create_worker", kwargs={"name": "teste"}, queue="configs"
+    )
 
-# TODO: Dockenizar celery e flower
-# celery -A celery.celery flower --port=5555
+
+# devine.delay(1, 2)
